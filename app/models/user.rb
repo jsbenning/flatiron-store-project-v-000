@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   def current_cart
     Cart.find(self.id)
     rescue ActiveRecord::RecordNotFound
-    cart = Cart.create(user_id: current_user.id)
+    cart = Cart.create(user_id: self.id)
     session[:cart_id] = cart.id
     cart
   end       
