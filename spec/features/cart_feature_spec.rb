@@ -25,7 +25,7 @@ describe 'Feature Test: Cart', :type => :feature do
        expect(page).to have_button("Checkout")
      end
 
-     it "redirects to cart show page on Checkout" do
+     it "redirects to cart show page on Checkout" do #when is the cart destroyed if we're directing to its show page??
        visit cart_path(@user.current_cart)
        click_button("Checkout")
 

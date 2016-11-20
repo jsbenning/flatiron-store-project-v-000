@@ -19,12 +19,12 @@ RSpec.describe Cart, :type => :model do
 
   it 'can calculate its total' do 
     Item.second.line_items.create(quantity: 1, cart: @cart)
-    expect(@cart.total).to eq(@item.price + Item.second.price)
+    expect(@cart.total).to eq((@item.price + Item.second.price).to_f/100)
   end
 
 
   describe "#add_item" do
-    it 'creates a new unsaved line_item for new item' do
+    it 'creates a new unsaved line_item for new item' do # why unsaved??
       second_item = Item.second
       second_line_item = @cart.add_item(second_item.id)
       expect(second_line_item.new_record?).to be_truthy
