@@ -26,7 +26,7 @@ class Cart < ActiveRecord::Base
       my_line_item.quantity += 1
       my_line_item.save
     end
-    self.save
+    #self.save
     my_line_item
   end
 
