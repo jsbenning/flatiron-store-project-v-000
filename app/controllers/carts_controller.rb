@@ -2,7 +2,10 @@ class CartsController < ApplicationController
 
   def show
     #binding.pry
+
     @cart = Cart.find(params[:id])
+    @cart.user_id = current_user.id
+    @cart.save
   end
 
   def checkout
@@ -12,8 +15,9 @@ class CartsController < ApplicationController
       l_item.item.save
     end
     @cart.status = 'complete'
+
     @cart.save
-    #current_cart = nil
+    
   
     redirect_to cart_path(@cart), notice: 'Successfully checked out!'
   end

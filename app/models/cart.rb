@@ -16,31 +16,42 @@ class Cart < ActiveRecord::Base
     # end
   end
 
-  # def add_item(some_item_id)
-  #   item = Item.find(some_item_id)
-  #   my_line_item = self.line_items.find{ |old_item| old_item.item.id == item.id }
-  #   if my_line_item.nil?
-  #     my_line_item = LineItem.new(item_id: item.id)#, cart_id: self.id)
-  #     self.line_items << my_line_item # hmm
-  #   else
-  #     my_line_item.quantity += 1
-  #     my_line_item.save
-  #   end
-  #   self.save
-  #   my_line_item
-  # end
-
-  def add_item(item_id)
-    line_item = self.line_items.find_by(item_id: item_id)
-    if line_item
-      line_item.quantity += 1
-      line_item.save
+  def add_item(some_item_id)
+    item = Item.find(some_item_id)
+    my_line_item = self.line_items.find{ |old_item| old_item.item.id == item.id }
+    if my_line_item.nil?
+      my_line_item = LineItem.new(item_id: item.id)#, cart_id: self.id)
+      self.line_items << my_line_item # hmm
     else
-      line_item = self.line_items.build(item_id: item_id)
+      my_line_item.quantity += 1
+      my_line_item.save
     end
     self.save
-    line_item
+    my_line_item
   end
+
+  # def add_item(item_id)
+  #   line_item = self.line_items.find_by(item_id: item_id)
+  #   if line_item
+  #     line_item.quantity += 1
+  #     line_item.save
+  #   else
+  #     line_items.build(item_id: item_id)
+  #   end
+  # end
+
+  # def add_item(item_id)
+  #   line_item = self.line_items.find_by(item_id: item_id)
+  #   if line_item
+  #     line_item.quantity += 1
+  #     line_item.save
+  #   else
+  #     line_item = self.line_items.build(item_id: item_id)
+  #     #binding.pry
+  #   end
+  #   #self.save
+  #   #line_item
+  # end
 
 
    def clear_cart(cart)
