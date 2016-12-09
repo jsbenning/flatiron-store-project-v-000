@@ -1,14 +1,11 @@
 class LineItemsController < ApplicationController
 
+
   def create
-    if current_cart
-      current_cart.add_item(params[:item_id])
-      redirect_to cart_path(current_cart)
-    else 
-      @cart = Cart.create(user_id: current_user.id)
-      session[:cart_id] = @cart.id
-      redirect_to cart_path(@cart)  
-    end
+    current_user.create_cart.save
+    current_user.current_cart.add_item(params[:item_id]).save
+    current_user.current_cart.save
+    current_user.save
+    redirect_to cart_path(current_user.current_cart)
   end
 end
-

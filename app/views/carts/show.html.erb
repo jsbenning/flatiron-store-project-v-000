@@ -1,25 +1,19 @@
-<% if @cart.status == 'complete' %>
-<h1>Items You Just Ordered</h1>
-  <% @cart.line_items.each do |line_item| %>
-    <p><%= line_item.item.title %>
-  <% end %>
-<h3>You Paid:</h3>
-<strong>$<%= @cart.total %></strong>
-<% @cart.clear_cart(@cart) %>
-
-  
-
-<% else %>
 <h1>Your Cart</h1>
-<% @cart.line_items.each do |line_item| %>
-<% if line_item.visible? %>
-    <p><%= link_to line_item.item.title, item_path(line_item.item) %> | $<%= ((line_item.item.price).to_f)/100 %> | Quantity: <%= line_item.quantity %> | <% if line_item.item.inventory < 5 %>
-      <strong>There are only <%= line_item.item.inventory %> left in stock.</strong></p>
-    <% end %> 
-  <% end %>
-<% end %>  
 
-  <p>Order total: <strong><%= number_to_currency(current_cart.total) %></strong> </p>
-
-<%= button_to 'Checkout', checkout_path %>
+<% if notice %>
+  <p><%= notice %></p> 
 <% end %>
+
+<% @cart.line_items.each do |line_item| %>
+  <p><%= link_to line_item.item.title, item_path(line_item.item) %> | <%= number_to_currency(line_item.item.price.to_f/100) %> | Quantity: <%= line_item.quantity %><% if line_item.item.inventory < 5 %>
+    <strong>There are only <%= line_item.item.inventory %> left in stock.</strong>
+  <% end %> </p>
+<% end %>
+
+<p>Order total: <strong><%= number_to_currency(current_cart.total.to_f) %></strong></p>
+
+<% if !(@cart.status == 'submitted') %>
+  <%= button_to 'Checkout', checkout_path %>
+<% end %>
+
+

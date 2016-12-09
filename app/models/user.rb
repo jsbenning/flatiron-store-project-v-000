@@ -1,19 +1,12 @@
 class User < ActiveRecord::Base
+  devise :database_authenticatable, :registerable, :validatable
+
+
   has_many :carts
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  attr_accessor :current_cart
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  belongs_to :current_cart, class_name: 'Cart'
 
+  def create_cart
+    self.current_cart ||= Cart.new
+  end
 
-  def current_cart
-    Cart.find(self.id)
-    rescue ActiveRecord::RecordNotFound
-    cart = nil#Cart.create(user_id: self.id)
-    # session[:cart_id] = cart.id
-    # cart
-  end       
-       
-            
 end

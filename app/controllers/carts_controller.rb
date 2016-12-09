@@ -1,26 +1,19 @@
 class CartsController < ApplicationController
 
-  def show
-    #binding.pry
 
+  def show
     @cart = Cart.find(params[:id])
-    @cart.user_id = current_user.id
-    @cart.save
   end
 
   def checkout
     @cart = Cart.find(params[:id])
-    @cart.line_items.each do |l_item|
-      l_item.item.inventory -= l_item.quantity 
-      l_item.item.save
+    @cart.line_items.each do |line_item|
+      Item.find(line_item.item_id).decrement(:inventory, line_item.quantity).save
     end
-    @cart.status = 'complete'
-
+    @cart.status = "submitted"
     @cart.save
-    
-  
-    redirect_to cart_path(@cart), notice: 'Successfully checked out!'
+    current_user.current_cart_id = nil
+    current_user.save
+    redirect_to cart_path(@cart)
   end
 end
-
-
